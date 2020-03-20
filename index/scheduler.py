@@ -13,13 +13,40 @@ def noConflict(section,schedule):
     return True
 
 def hasTimeConflict(course1, course2):
-    for week in range(0, NUM_WEEKS):
-        for day in range(0,7):
-            for meeting in course1['weeks'][week][day]['meetingTimes'])
-            
-}
+    #compare both course's meeting times
+    for meetingTime1 in course1['meetingTimes']:
+        for meetingTime2 in course2['meetingTimes']:
+            #determine common weeks between courses
+            commonWeeks = set(meetingTime1['weeks']).intersection(set(meetingTime2['weeks']))
 
+            #if they have weeks in common, check days
+            if commonWeeks:
+                days1 = [meetingTime1['monday'],
+                        meetingTime1['tuesday'],
+                        meetingTime1['wednesday'],
+                        meetingTime1['thursday'],
+                        meetingTime1['friday'],
+                        meetingTime1['saturday'],
+                        meetingTime1['sunday']]
+                days2 = [meetingTime2['monday'],
+                        meetingTime2['tuesday'],
+                        meetingTime2['wednesday'],
+                        meetingTime2['thursday'],
+                        meetingTime2['friday'],
+                        meetingTime2['saturday'],
+                        meetingTime2['sunday']]
 
+            #element wise list of boolean AND between days1 and days2    
+            aAndB = [x and y for x,y in zip(days1,days2)]
+
+            #if they have days in common, check times
+            if any(aAndB):
+                if meetingTime1['startTime'] <= meetingTime2['startTime'] and meetingTime1['endTime'] >= meetingTime2['startTime']:
+                    return True
+                if meetingTime2['startTime'] <= meetingTime1['startTime'] and meetingTime2['endTime'] >= meetingTime1['startTime']:
+                    return True
+
+    return False  
 '''
     Proposed format
 {

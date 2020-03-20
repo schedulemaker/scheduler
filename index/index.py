@@ -1,11 +1,17 @@
 import json
 import cache
 import os
+import asyncio
 
 dynamodb = None
 scheduler = None
 
-def lambda_handler(event, context):
+loop = asyncio.get_event_loop()
+
+def lambda_handler(event,context):
+    return loop.run_until_complete(job(event,context))
+
+async def job(event, context):
     dynamodb,scheduler = cache.exports()
 
     params = event.body
@@ -14,7 +20,7 @@ def lambda_handler(event, context):
     print('Received the following courses: {}', courseList)
 
     try:
-        data = getSections(courseList, params.campus)
+        data = await getSections(courseList, params.campus)
     except Exception as e:
         print('Unable to get all courses form database: {}', e)
 
@@ -26,7 +32,7 @@ def lambda_handler(event, context):
                     'Access-Control-Allow-Origin': '*'
                 }}
 
-    schedules = scheduler.createSchedules(courses)
+    schedules = scheduler.createSchedules(data)
     print('Created {} schedules', len(schedules))
 
     return {'statusCode': 200,
@@ -38,7 +44,7 @@ def lambda_handler(event, context):
                 }}
 
 
-def getSections(courses, campus):
+async def getSections(courses, campus):
     return list(map(lambda course:
         dynamodb.query(
             TableName=os.environ['TABLENAME'],
@@ -48,7 +54,7 @@ def getSections(courses, campus):
                     '#campus': 'campus',
                     '#isOpen': 'isOpen'
             },
-            ExpressionAttributeValues=expressionAttributeValues(campus,course),
+            ExpressionAttributeValues= expressionAttributeValues(campus,course),
             FilterExpression='#isOpen = :true AND #campus IN ({})'.format(''.join(list(map(lambda camp: ':${}'.format(camp),campus))))
         )
         ,
