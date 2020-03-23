@@ -1,9 +1,9 @@
 import boto3
-import scheduler
+import scheduler as schedule
 import os
 
 
 def exports():
     dynamodb = boto3.client('dynamodb')
-    
+    scheduler = schedule.Scheduler()
     return dynamodb, scheduler
