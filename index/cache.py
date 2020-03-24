@@ -1,6 +1,5 @@
 import boto3
 import scheduler as schedule
-import os
 
 
 def exports():
