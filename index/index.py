@@ -48,7 +48,7 @@ async def getSections(courses, campus):
     return list(map(lambda course:
         dynamodb.query(
             TableName=os.environ['TABLENAME'],
-            KeyConditionExpression='courseName = :course',
+            KeyConditionExpression='#courseName = :course',
             ExpressionAttributeNames={
                 "#courseName" : "courseName",
                     '#campus': 'campus',
