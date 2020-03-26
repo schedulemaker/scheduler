@@ -97,7 +97,7 @@ class Scheduler:
             # If the 2 stacks do not contain the same # of items, that means that no compatible section was found
             # previously, and we pop the placeholder off the stack to pick up where we left off with the previous course
             if len(current) != len(temp):
-                j = index.pop
+                j = index.pop()
             else:
                 # Otherwise, we can push the next course onto the current stack and iterate through it's sections
                 current.append(courses[i])
@@ -122,13 +122,13 @@ class Scheduler:
             # that any remaining sections of the current course can be tested.
             if len(temp) == len(courses):
                 results.append(list(temp))
-                temp.pop
+                temp.pop()
             # If j is not less than the number of sections in the current course, then that means that so compatible
             # section was found, so we need to backtrack to the previous course and try the remaining sections. We also
             # decrement i to keep it aligned with which course in the list we're on*/
             elif j >= len(top):
-                current.pop
-                temp.pop
+                current.pop()
+                temp.pop()
                 i -= 1
             # Otherwise increment i to move onto the next course in the next loop iteration
             else:
