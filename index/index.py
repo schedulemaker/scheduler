@@ -16,7 +16,7 @@ async def job(event, context):
     try:
         data = await getSections(courseList, campus)
     except Exception as e:
-        print('Unable to get all courses form database: {}', e)
+        print('Unable to get all courses from database: {}', e)
 
         return {'statusCode': 500,
                 'body': 'Unable to process request',
