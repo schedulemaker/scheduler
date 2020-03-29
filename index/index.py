@@ -9,11 +9,12 @@ def lambda_handler(event,context):
 async def job(event, context):
     #params = event.body
     courseList = event['courses']
+    campus = event['campus']
 
     print('Received the following courses: {}', courseList)
 
     try:
-        data = await getSections(courseList, params.campus)
+        data = await getSections(courseList, campus)
     except Exception as e:
         print('Unable to get all courses form database: {}', e)
 
