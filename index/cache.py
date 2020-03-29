@@ -4,7 +4,7 @@ def exports():
 
     if 'boto3' not in local and 'boto3' not in globa:
         import boto3
-    if 'scheduler' not in local and 'scheduler' not in globa:
+    if 'schedule' not in local and 'schedule' not in globa:
         import scheduler as schedule
     if 'os' not in local and 'os' not in globa:
         import os
