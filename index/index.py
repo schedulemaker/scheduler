@@ -7,8 +7,8 @@ def lambda_handler(event,context):
     return loop.run_until_complete(job(event,context))
 
 async def job(event, context):
-    params = event.body
-    courseList = params.courses
+    #params = event.body
+    courseList = event['courses']
 
     print('Received the following courses: {}', courseList)
 
