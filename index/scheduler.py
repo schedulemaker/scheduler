@@ -1,5 +1,3 @@
-from collections import deque
-
 def noConflict(section,schedule):
     '''
     noConflict - Checks if the given section conflicts with any other sections in the schedule
@@ -54,11 +52,12 @@ def hasTimeConflict(section1, section2):
     return False  
 
 class Scheduler:
-    def __init__(self):
-        pass
+    def __init__(self, deque):
+        self.deque = deque
 
     def createSchedules(self, courses):
         '''Params: Courses - a list of list of sections'''
+        deque = self.deque
 
         #sort courses by number of meeting times least -> most
         courses = sorted(courses, key=len)

@@ -1,19 +1,12 @@
-import json
 import cache
-import os
-import asyncio
 
-dynamodb = None
-scheduler = None
-
+dynamodb, scheduler, os, json, asyncio = cache.exports()
 loop = asyncio.get_event_loop()
 
 def lambda_handler(event,context):
     return loop.run_until_complete(job(event,context))
 
 async def job(event, context):
-    dynamodb,scheduler = cache.exports()
-
     params = event.body
     courseList = params.courses
 
