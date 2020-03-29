@@ -49,15 +49,15 @@ async def getSections(courses, campus):
                     '#isOpen': 'isOpen'
             },
             ExpressionAttributeValues= expressionAttributeValues(campus,course),
-            FilterExpression='#isOpen = :true AND #campus IN ({})'.format(''.join(list(map(lambda camp: ':${}'.format(camp),campus))))
+            FilterExpression='#isOpen = :true AND #campus IN ({})'.format(''.join(list(map(lambda camp: ':{}'.format(camp),campus))))
         )
         ,
         courses))
 
 def expressionAttributeValues(campus,course):
     obj = {
-        ":course": course,
-        ':true': True 
+        ":course": {'S': str(course)},
+        ':true': {'BOOL': True} 
     }
-    append = {':${}'.format(camp):camp for camp in campus}
+    append = {':{}'.format(camp):{'S':str(camp)} for camp in campus}
     return {**obj, **append}
