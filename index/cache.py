@@ -14,9 +14,11 @@ def exports():
         import asyncio
     if 'deque' not in local and 'deque' not in globa:
         from collections import deque
+    if 'deserializer' not in local and 'deserializer' not in globa:
+        from boto3.dynamodb.types import TypeDeserializer as deserializer
 
-     
     dynamodb = boto3.client('dynamodb')
     scheduler = schedule.Scheduler(deque)
     
-    return dynamodb, scheduler, os, json, asyncio
+
+    return dynamodb, scheduler, os, json, asyncio, deserializer

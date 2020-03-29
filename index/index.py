@@ -1,6 +1,6 @@
 import cache
 
-dynamodb, scheduler, os, json, asyncio = cache.exports()
+dynamodb, scheduler, os, json, asyncio, deserializer = cache.exports()
 loop = asyncio.get_event_loop()
 
 def lambda_handler(event,context):
@@ -40,7 +40,7 @@ async def job(event, context):
 
 async def getSections(courses, campus):
     return list(map(lambda course:
-        dynamodb.query(
+        deserialize(dynamodb.query(
             TableName=os.environ['TABLENAME'],
             KeyConditionExpression='#courseName = :course',
             ExpressionAttributeNames={
@@ -50,7 +50,7 @@ async def getSections(courses, campus):
             },
             ExpressionAttributeValues= expressionAttributeValues(campus,course),
             FilterExpression='#isOpen = :true AND #campus IN ({})'.format(''.join(list(map(lambda camp: ':{}'.format(camp),campus))))
-        )
+        ))['Items']
         ,
         courses))
 
@@ -60,4 +60,17 @@ def expressionAttributeValues(campus,course):
         ':true': {'BOOL': True} 
     }
     append = {':{}'.format(camp):{'S':str(camp)} for camp in campus}
+
     return {**obj, **append}
+
+def deserialize(data):
+    if isinstance(data, list):
+       return [deserialize(v) for v in data]
+
+    if isinstance(data, dict):
+        try: 
+            return deserializer().deserialize(data)
+        except TypeError:
+            return { k : deserialize(v) for k, v in data.items() }
+    else:
+        return data
