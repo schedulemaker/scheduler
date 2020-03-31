@@ -30,7 +30,7 @@ async def job(event, context):
     print('Created {} schedules', len(schedules))
 
     return {'statusCode': 200,
-                'body': json.dumps(schedules),
+                'body': schedules,
                 'headers': {
                     'Content-Type': 'application/json',
                     'Access-Control-Allow-Methods': '*',

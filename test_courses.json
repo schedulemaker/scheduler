@@ -1,0 +1,329 @@
+[
+    [
+        {
+            "isOpen": true,
+            "campus": "Main",
+            "meetingTimes": [
+                {
+                    "saturday": false,
+                    "weeks": [
+                        1,
+                        2,
+                        3,
+                        4,
+                        5,
+                        6,
+                        7,
+                        8,
+                        9,
+                        10,
+                        11,
+                        12,
+                        13,
+                        14,
+                        15,
+                        16
+                    ],
+                    "campus": "Main",
+                    "thursday": true,
+                    "building": "SERC",
+                    "room": "00204",
+                    "instructors": [
+                        "Justin Y. Shi"
+                    ],
+                    "sunday": false,
+                    "tuesday": false,
+                    "friday": false,
+                    "wednesday": false,
+                    "startTime": "1100",
+                    "endTime": "1250",
+                    "monday": false
+                },
+                {
+                    "saturday": false,
+                    "weeks": [
+                        1,
+                        2,
+                        3,
+                        4,
+                        5,
+                        6,
+                        7,
+                        8,
+                        9,
+                        10,
+                        11,
+                        12,
+                        13,
+                        14,
+                        15,
+                        16
+                    ],
+                    "campus": "Main",
+                    "thursday": false,
+                    "building": "TTLMAN",
+                    "room": "0305A",
+                    "instructors": [
+                        "Justin Y. Shi"
+                    ],
+                    "sunday": false,
+                    "tuesday": false,
+                    "friday": false,
+                    "wednesday": true,
+                    "startTime": "1230",
+                    "endTime": "1350",
+                    "monday": true
+                }
+            ],
+            "courseName": "Advanced Web Technology and Programming",
+            "crn": 18991
+        }
+    ],
+    [
+        {
+            "isOpen": true,
+            "campus": "Main",
+            "meetingTimes": [
+                {
+                    "saturday": false,
+                    "weeks": [
+                        1,
+                        2,
+                        3,
+                        4,
+                        5,
+                        6,
+                        7,
+                        8,
+                        9,
+                        10,
+                        11,
+                        12,
+                        13,
+                        14,
+                        15,
+                        16
+                    ],
+                    "campus": "Main",
+                    "thursday": true,
+                    "building": "PEARMC",
+                    "room": "0P143",
+                    "sunday": false,
+                    "tuesday": true,
+                    "friday": false,
+                    "wednesday": false,
+                    "startTime": "0930",
+                    "endTime": "1050",
+                    "monday": false
+                }
+            ],
+            "courseName": "Adventure Climbing I",
+            "crn": 2235
+        },
+        {
+            "isOpen": true,
+            "campus": "Main",
+            "meetingTimes": [
+                {
+                    "saturday": false,
+                    "weeks": [
+                        1,
+                        2,
+                        3,
+                        4,
+                        5,
+                        6,
+                        7,
+                        8,
+                        9,
+                        10,
+                        11,
+                        12,
+                        13,
+                        14,
+                        15,
+                        16
+                    ],
+                    "campus": "Main",
+                    "thursday": true,
+                    "building": "PEARMC",
+                    "room": "0P143",
+                    "sunday": false,
+                    "tuesday": true,
+                    "friday": false,
+                    "wednesday": false,
+                    "startTime": "1100",
+                    "endTime": "1220",
+                    "monday": false
+                }
+            ],
+            "courseName": "Adventure Climbing I",
+            "crn": 2236
+        },
+        {
+            "isOpen": true,
+            "campus": "Main",
+            "meetingTimes": [
+                {
+                    "saturday": false,
+                    "weeks": [
+                        1,
+                        2,
+                        3,
+                        4,
+                        5,
+                        6,
+                        7,
+                        8,
+                        9,
+                        10,
+                        11,
+                        12,
+                        13,
+                        14,
+                        15,
+                        16
+                    ],
+                    "campus": "Main",
+                    "thursday": true,
+                    "building": "PEARMC",
+                    "room": "0P143",
+                    "sunday": false,
+                    "tuesday": true,
+                    "friday": false,
+                    "wednesday": false,
+                    "startTime": "0800",
+                    "endTime": "0920",
+                    "monday": false
+                }
+            ],
+            "courseName": "Adventure Climbing I",
+            "crn": 41388
+        }
+    ],
+    [
+        {
+            "isOpen": true,
+            "campus": "Main",
+            "meetingTimes": [
+                {
+                    "saturday": false,
+                    "weeks": [
+                        1,
+                        2,
+                        3,
+                        4,
+                        5,
+                        6,
+                        7,
+                        8,
+                        9,
+                        10,
+                        11,
+                        12,
+                        13,
+                        14,
+                        15,
+                        16
+                    ],
+                    "campus": "Main",
+                    "thursday": false,
+                    "building": "WCHMAN",
+                    "room": "00015",
+                    "instructors": [],
+                    "sunday": false,
+                    "tuesday": false,
+                    "friday": true,
+                    "wednesday": true,
+                    "startTime": "1320",
+                    "endTime": "1430",
+                    "monday": true
+                }
+            ],
+            "courseName": "Intermediate Algebra",
+            "crn": 7118
+        },
+        {
+            "isOpen": true,
+            "campus": "Main",
+            "meetingTimes": [
+                {
+                    "saturday": false,
+                    "weeks": [
+                        1,
+                        2,
+                        3,
+                        4,
+                        5,
+                        6,
+                        7,
+                        8,
+                        9,
+                        10,
+                        11,
+                        12,
+                        13,
+                        14,
+                        15,
+                        16
+                    ],
+                    "campus": "Main",
+                    "thursday": false,
+                    "building": "SERC",
+                    "room": "0108B",
+                    "instructors": [],
+                    "sunday": false,
+                    "tuesday": false,
+                    "friday": true,
+                    "wednesday": true,
+                    "startTime": "1040",
+                    "endTime": "1150",
+                    "monday": true
+                }
+            ],
+            "courseName": "Intermediate Algebra",
+            "crn": 7119
+        },
+        {
+            "isOpen": true,
+            "campus": "Main",
+            "meetingTimes": [
+                {
+                    "saturday": false,
+                    "weeks": [
+                        1,
+                        2,
+                        3,
+                        4,
+                        5,
+                        6,
+                        7,
+                        8,
+                        9,
+                        10,
+                        11,
+                        12,
+                        13,
+                        14,
+                        15,
+                        16
+                    ],
+                    "campus": "Main",
+                    "thursday": false,
+                    "building": "WCHMAN",
+                    "room": "00207",
+                    "instructors": [],
+                    "sunday": false,
+                    "tuesday": false,
+                    "friday": true,
+                    "wednesday": true,
+                    "startTime": "1600",
+                    "endTime": "1710",
+                    "monday": true
+                }
+            ],
+            "courseName": "Intermediate Algebra",
+            "crn": 7120
+        }
+    ]
+]

@@ -44,9 +44,9 @@ def hasTimeConflict(section1, section2):
 
             #if they have days in common, check times
             if any(aAndB):
-                if meetingTime1['startTime'] <= meetingTime2['startTime'] and meetingTime1['endTime'] >= meetingTime2['startTime']:
+                if int(meetingTime1['startTime']) <= int(meetingTime2['startTime']) and int(meetingTime1['endTime']) >= int(meetingTime2['startTime']):
                     return True
-                if meetingTime2['startTime'] <= meetingTime1['startTime'] and meetingTime2['endTime'] >= meetingTime1['startTime']:
+                if int(meetingTime2['startTime']) <= int(meetingTime1['startTime']) and int(meetingTime2['endTime']) >= int(meetingTime1['startTime']):
                     return True
 
     return False  
@@ -127,7 +127,11 @@ class Scheduler:
             # decrement i to keep it aligned with which course in the list we're on*/
             elif j >= len(top):
                 current.pop()
-                temp.pop()
+
+                #if temp is empty, that means we're done
+                if len(temp) > 0:
+                    temp.pop()
+
                 i -= 1
             # Otherwise increment i to move onto the next course in the next loop iteration
             else:
