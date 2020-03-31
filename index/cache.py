@@ -20,5 +20,4 @@ def exports():
     dynamodb = boto3.client('dynamodb')
     scheduler = schedule.Scheduler(deque)
     
-
     return dynamodb, scheduler, os, json, asyncio, deserializer
