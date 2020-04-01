@@ -38,7 +38,7 @@ async def getSections(courses, campus):
                     '#isOpen': 'isOpen'
             },
             ExpressionAttributeValues= expressionAttributeValues(campus,course),
-            FilterExpression='#isOpen = :true AND #campus IN ({})'.format(''.join(list(map(lambda camp: ':{}'.format(camp),campus))))
+            FilterExpression='#isOpen = :true AND #campus IN ({})'.format(','.join(list(map(lambda camp: ':{}'.format(camp),campus))))
         ))['Items']
         ,
         courses))
