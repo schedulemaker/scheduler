@@ -16,26 +16,15 @@ async def job(event, context):
     try:
         data = await getSections(courseList, campus)
     except Exception as e:
-        print('Unable to get all courses from database: {}', e)
-
-        return {'statusCode': 500,
-                'body': 'Unable to process request',
-                'headers': {
-                    'Content-Type': 'application/json',
-                    'Access-Control-Allow-Methods': '*',
-                    'Access-Control-Allow-Origin': '*'
-                }}
+        # Otherwise Lambda will return success. We could also probably just not use try catch 
+        # but in the future we should implement something more detailed based upon the exact type of error
+        raise Exception('Unable to get all courses from database: {}', e.args) 
+    
 
     schedules = scheduler.createSchedules(data)
     print('Created {} schedules', len(schedules))
 
-    return {'statusCode': 200,
-                'body': schedules,
-                'headers': {
-                    'Content-Type': 'application/json',
-                    'Access-Control-Allow-Methods': '*',
-                    'Access-Control-Allow-Origin': '*'
-                }}
+    return schedules # No need to serialize and return status code
 
 
 async def getSections(courses, campus):
