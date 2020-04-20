@@ -9,12 +9,12 @@ def lambda_handler(event,context):
 async def job(event, context):
     #params = event.body
     courseList = event['courses']
-    campus = event['campus']
+    campuses = event['campuses']
 
     print('Received the following courses: {}', courseList)
 
     try:
-        data = await getSections(courseList, campus)
+        data = await getSections(courseList, campuses)
     except Exception as e:
         # Otherwise Lambda will return success. We could also probably just not use try catch 
         # but in the future we should implement something more detailed based upon the exact type of error
@@ -27,7 +27,7 @@ async def job(event, context):
     return schedules # No need to serialize and return status code
 
 
-async def getSections(courses, campus):
+async def getSections(courses, campuses):
     return list(map(lambda course:
         deserialize(dynamodb.query(
             TableName=os.environ['TABLENAME'],
@@ -37,18 +37,18 @@ async def getSections(courses, campus):
                     '#campus': 'campus',
                     '#isOpen': 'isOpen'
             },
-            ExpressionAttributeValues= expressionAttributeValues(campus,course),
-            FilterExpression='#isOpen = :true AND #campus IN ({})'.format(','.join(list(map(lambda camp: ':{}'.format(camp),campus))))
+            ExpressionAttributeValues= expressionAttributeValues(campuses,course),
+            FilterExpression='#isOpen = :true AND #campus IN ({})'.format(','.join(list(map(lambda camp: ':{}'.format(camp),campuses))))
         ))['Items']
         ,
         courses))
 
-def expressionAttributeValues(campus,course):
+def expressionAttributeValues(campuses,course):
     obj = {
         ":course": {'S': str(course)},
         ':true': {'BOOL': True} 
     }
-    append = {':{}'.format(camp):{'S':str(camp)} for camp in campus}
+    append = {':{}'.format(camp):{'S':str(camp)} for camp in campuses}
 
     return {**obj, **append}
 
