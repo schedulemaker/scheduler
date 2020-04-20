@@ -1,7 +1,17 @@
 # scheduler
 Generates schedules based on class times, avoiding conflicts
 
-Request body should contain courses in this format:
+Sample test event JSON for use in the Lambda console:
 ```
-{"courses": ["CIS 1068", "MATH 1042", "IH 0951"]}
+{
+  "courses": [
+    "SCTC-1001",
+    "CIS-1001",
+    "CIS-1051"
+  ],
+  "campuses": [
+    "MN",
+    "AMB"
+  ]
+}
 ```
