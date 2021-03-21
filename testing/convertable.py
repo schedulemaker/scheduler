@@ -1,12 +1,44 @@
-import json
+import json, html
 
-with open('temple-202036.json', 'r') as file:
-    table = json.load(file)
+# Cleans the data from Banner, including:
+#   - Consistent values for courses with no meeting times
+#   - Removing HTML entities from text
+#   - Removing duplicate meeting time entries
 
-items = table['Items']
-courseNames = ['IH-0851', 'IH-0852', 'ENG-0802']
-items = [item for item in items if item['courseName']['S'] in courseNames]
-courses = [{'name':item['courseName']['S'],'crn':item['crn']['N'],'meetingTimes':[{'startDate':mt['M']['startDate']['S'],'endDate':mt['M']['endDate']['S'],'startTime':mt['M']['startTime']['N'],'endTime':mt['M']['endTime']['N'],'monday':mt['M']['monday']['BOOL'],'tuesday':mt['M']['tuesday']['BOOL'],'wednesday':mt['M']['wednesday']['BOOL'],'thursday':mt['M']['thursday']['BOOL'],'friday':mt['M']['friday']['BOOL'],'sunday':mt['M']['sunday']['BOOL'],'saturday':mt['M']['saturday']['BOOL']} for mt in item['meetingTimes']['L']]} for item in items]
+days = [
+    'saturday',
+    'sunday',
+    'monday',
+    'tuesday',
+    'wednesday',
+    'thursday',
+    'friday'
+]
 
-with open('table.json','w') as file:
-    json.dump(courses,file)
+filename = 'temple-202003'
+with open(f'testing/{filename}.json', 'r') as file:
+    data = json.load(file)
+
+for item in data:
+    # Clean course titles and instructor names
+    item['courseTitle'] = html.unescape(item['courseTitle'].replace('&nbsp;',''))
+    for faculty in item['faculty']:
+        faculty['displayName'] = html.unescape(faculty['displayName'].replace('&nbsp;',''))
+    # Remove any empty meeting times
+    item['meetingsFaculty'] = [mf for mf in item['meetingsFaculty'] if all([mf['meetingTime']['beginTime'], mf['meetingTime']['endTime']])]   
+    if len(item['meetingsFaculty']) == 0:
+        item['meetingsFaculty'] = None
+    # Remove any duplicate meeting times
+    if item['meetingsFaculty']:
+        unique = {}
+        for mf in item['meetingsFaculty']:
+            mt = mf['meetingTime']
+            mt_days = ''.join(['1' if mt[d] else '0' for d in days])
+            mt_time = f'{mt["beginTime"]}{mt["endTime"]}'
+            mt_date = f'{mt["startDate"].replace("/","")}{mt["endDate"].replace("/","")}'
+            mt_hash = mt_date + mt_time + mt_days
+            unique[mt_hash] = mf
+        item['meetingsFaculty'] = list(unique.values())
+
+with open(f'testing/{filename}-clean.json','w') as file:
+    json.dump(data,file)
