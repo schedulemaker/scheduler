@@ -11,8 +11,9 @@ days = [
     'thursday',
     'friday'
 ]
+empty_hash = '000000000000000000000000000'
 
-term = '202103'
+term = '202036'
 with open(f'testing/temple-{term}-clean.json','r') as file:
     data = json.load(file)
 
@@ -33,7 +34,7 @@ def format(item):
             e_date_split = mt['endDate'].split('/')
             endDate = e_date_split[2] + e_date_split[0] + e_date_split[1]
 
-            mt_hash = f'{startDate}{endDate}{mt["beginTime"]}{mt["endTime"]}{mt_days}'
+            mt_hash = f'{startDate}{endDate}{mt["beginTime"]}{mt["endTime"]}{str(mt_days).zfill(3)}'
             course_hashes.append(mt_hash)
 
             entry['classtimes'].append({
@@ -47,7 +48,8 @@ def format(item):
         course_hashes.sort()
         entry['hash'] = ''.join(course_hashes)
     else:
-        entry['hash'] = '0000000000000000000000000'
+        entry['classtimes'] = None
+        entry['hash'] = empty_hash
     return entry
 
 data = [format(item) for item in data]
