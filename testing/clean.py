@@ -15,7 +15,7 @@ days = [
     'friday'
 ]
 
-filename = 'temple-202003'
+filename = 'temple-202103'
 with open(f'testing/{filename}.json', 'r') as file:
     data = json.load(file)
 

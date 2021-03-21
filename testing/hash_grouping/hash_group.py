@@ -20,15 +20,15 @@ for course in data:
     if course['meetingsFaculty']:
         for mf in course['meetingsFaculty']:
             mt = mf['meetingTime']
-            mt_days = ''.join(['1' if mt[d] else '0' for d in days])
+            mt_days = int(''.join(['1' if mt[d] else '0' for d in days]),2)
             mt_time = f'{mt["beginTime"]}{mt["endTime"]}'
             mt_date = f'{mt["startDate"].replace("/","")}{mt["endDate"].replace("/","")}'
-            mt_hash = mt_date + mt_time + mt_days
+            mt_hash = f'{mt_date}{mt_time}{mt_days}'
             course_hashes.append(mt_hash)
         course_hashes.sort()
         course['hash'] = ''.join(course_hashes)
     else:
-        course['hash'] = '0000000000000000000000000000000'
+        course['hash'] = '0000000000000000000000000'
 
 d = {}
 d_times = {}
