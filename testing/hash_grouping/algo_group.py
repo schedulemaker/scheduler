@@ -3,11 +3,10 @@
 hash_length = 27
 empty_hash = '000000000000000000000000000'
 
-def check_times(to_check, schedule):
+def check_times(to_check, schedule, schedule_hashes):
     schedule = [s for s in schedule if s['classtimes']]
     # First see if any hashes are already in the schedule, which would indicate a conflict, to save time
-    # schedule_hashes = set([ct['hash'] for s in schedule for ct in s['classtimes']])
-    # to_check_hashes = set([ct['hash'] for ct in to_check['classtimes']])
+    # to_check_hashes = set(to_check['hashes'])
     # if schedule_hashes & to_check_hashes:
     #     return False
     # Otherwise go group by group
@@ -26,9 +25,10 @@ def check_times(to_check, schedule):
 def create_schedules(courses):
     courses.sort(key=len)
     course_idxs, group_idxs, temp, results = [],[],[],[]
+    temp_hashes = set()
     course_idxs.append(0)
     temp.append(courses[0][0])
-    # temp_hashes.append(courses[0][0]['hash'])
+    temp_hashes.update(courses[0][0]['hashes'])
     group_idxs.append(1)
 
     course_idx = 1
@@ -48,9 +48,9 @@ def create_schedules(courses):
         while group_idx < len(current_course): 
             group = current_course[group_idx]
             # Add the section if it does not conflict OR if it has no meeting times (online class)
-            if not group['classtimes'] or check_times(group, temp):
+            if not group['classtimes'] or check_times(group, temp, temp_hashes):
                 temp.append(group)
-                # temp_hashes.append(group['hash'])
+                temp_hashes.update(group['hashes'])
                 # Save our place so we can resume where we left off (with the next section)
                 group_idxs.append(group_idx + 1)
                 break
@@ -60,14 +60,14 @@ def create_schedules(courses):
         # Once we have a section for each course, add the schedule to the list of results and remove the last section so we can try any remaining sections
         if len(temp) == len(courses):
             results.append(list(temp))
-            temp.pop()
-            # temp_hashes.pop()
+            s = temp.pop()
+            temp_hashes.difference_update(s['hashes'])
         # Otherwise, if we have tried all of the sections for this course, go back to the previous course and try any remaining sections
         elif group_idx >= len(current_course):
             course_idxs.pop()
             if len(course_idxs) > 0:
-                temp.pop()
-                # temp_hashes.pop()
+                s = temp.pop()
+                temp_hashes.difference_update(s['hashes'])
             course_idx -= 1
         # Otherwise,
         else: 

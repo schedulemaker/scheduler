@@ -13,7 +13,7 @@ days = [
 ]
 empty_hash = '000000000000000000000000000'
 
-term = '202103'
+term = '202036'
 with open(f'testing/temple-{term}-clean.json','r') as file:
     data = json.load(file)
 
@@ -47,9 +47,11 @@ def format(item):
             })
         course_hashes.sort()
         entry['hash'] = ''.join(course_hashes)
+        entry['hashes'] = course_hashes
     else:
         entry['classtimes'] = None
         entry['hash'] = empty_hash
+        entry['hashes'] = []
     return entry
 
 data = [format(item) for item in data]
