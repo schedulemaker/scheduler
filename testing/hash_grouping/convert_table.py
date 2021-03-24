@@ -13,7 +13,7 @@ days = [
 ]
 empty_hash = '000000000000000000000000000'
 
-term = '202036'
+term = '202103'
 with open(f'testing/temple-{term}-clean.json','r') as file:
     data = json.load(file)
 
@@ -39,8 +39,8 @@ def format(item):
 
             entry['classtimes'].append({
               'hash': mt_hash,
-              'start_date': startDate,
-              'end_date': endDate,
+              'start_date': int(startDate),
+              'end_date': int(endDate),
               'start_time': int(mt['beginTime']),
               'end_time': int(mt['endTime']),
               'days': mt_days  

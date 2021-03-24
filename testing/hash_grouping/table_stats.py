@@ -1,7 +1,7 @@
-import json
+import json,csv,sys
 
-filename = 'temple-202036'
-with open(f'testing/{filename}-clean.json','r') as file:
+empty_hash = '000000000000000000000000000'
+with open(sys.argv[1],'r') as file:
     data = json.load(file)
 
 days = [
@@ -28,7 +28,7 @@ for course in data:
         course_hashes.sort()
         course['hash'] = ''.join(course_hashes)
     else:
-        course['hash'] = '0000000000000000000000000'
+        course['hash'] = empty_hash
 
 d = {}
 d_times = {}
@@ -43,4 +43,5 @@ for course in data:
     d[course['name']][course['hash']].append(course['courseReferenceNumber'])
     d_times[course['hash']].append(course['courseReferenceNumber'])
 
-print('done')
+with open(f'{sys.argv[1][:-4]}-stats.csv', 'w') as file:
+    file.writelines([f'{key}, {len(d[key])}\n' for key in d])

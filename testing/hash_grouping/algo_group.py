@@ -1,54 +1,19 @@
-import json, time
+
 
 hash_length = 27
 empty_hash = '000000000000000000000000000'
 
-term = '202036'
-with open(f'testing/hash_grouping/table-{term}.json','r') as file:
-    data = json.load(file)
-
-course_list = ['ENG 0802', 'IH 0851', 'IH 0852']
-data = [item for item in data if item['name'] in course_list]
-
-d = {}
-for course in data:
-    if course['name'] not in d:
-        d[course['name']] = {}
-    if course['hash'] not in d[course['name']]:
-        d[course['name']][course['hash']] = []
-    d[course['name']][course['hash']].append(course['crn'])
-
-hashes = [d[key] for key in d.keys()]
-courses = [list(i) for i in hashes]
-
-# def check_times(to_check, schedule):
-#     for section in [s for s in schedule if s['classtimes'] != None]:
-#         for classtime_a in section['classtimes']:
-#             for classtime_b in to_check['classtimes']:
-#                 # Check if date ranges overlap
-#                 if not (classtime_a['start_date'] > classtime_b['end_date'] or classtime_b['start_date'] > classtime_a['end_date']):
-#                     # Check if days overlap
-#                     if classtime_a['days'] & classtime_b['days']:
-#                         # Check if times overlap
-#                         if not (classtime_a['start_time'] > classtime_b['end_time'] or classtime_b['start_time'] > classtime_a['end_time']):
-#                             return False
-#     return True       
-
-def parse_hash(hash_str):
-    hash_strs = [hash_str[i:i+hash_length] for i in range(0, len(hash_str), hash_length)]
-    return [{
-        'start_date': h[:8],
-        'end_date': h[8:16],
-        'start_time': int(h[16:20]),
-        'end_time': int(h[20:24]),
-        'days': int(h[24:])
-    } for h in hash_strs]
-
-
 def check_times(to_check, schedule):
-    for hash_str in [h[0] for h in schedule if h[0] != empty_hash]:
-        for classtime_a in parse_hash(hash_str):
-            for classtime_b in parse_hash(to_check):
+    schedule = [s for s in schedule if s['classtimes']]
+    # First see if any hashes are already in the schedule, which would indicate a conflict, to save time
+    # schedule_hashes = set([ct['hash'] for s in schedule for ct in s['classtimes']])
+    # to_check_hashes = set([ct['hash'] for ct in to_check['classtimes']])
+    # if schedule_hashes & to_check_hashes:
+    #     return False
+    # Otherwise go group by group
+    for group in schedule:
+        for classtime_a in to_check['classtimes']:
+            for classtime_b in group['classtimes']:
                 # Check if date ranges overlap
                 if not (classtime_a['start_date'] > classtime_b['end_date'] or classtime_b['start_date'] > classtime_a['end_date']):
                     # Check if days overlap
@@ -58,13 +23,12 @@ def check_times(to_check, schedule):
                             return False
     return True   
 
-def create(courses):
+def create_schedules(courses):
     courses.sort(key=len)
-    hashes.sort(key=len)
     course_idxs, group_idxs, temp, results = [],[],[],[]
     course_idxs.append(0)
-    hash_str = courses[0][0]
-    temp.append([hash_str,hashes[0][hash_str]])
+    temp.append(courses[0][0])
+    # temp_hashes.append(courses[0][0]['hash'])
     group_idxs.append(1)
 
     course_idx = 1
@@ -82,10 +46,11 @@ def create(courses):
         current_course = courses[course_idxs[-1]]
         # Go through each section of the course and check if it works
         while group_idx < len(current_course): 
-            hash_str = current_course[group_idx]
+            group = current_course[group_idx]
             # Add the section if it does not conflict OR if it has no meeting times (online class)
-            if hash_str == empty_hash or check_times(hash_str, temp):
-                temp.append([hash_str, hashes[course_idx][hash_str]])
+            if not group['classtimes'] or check_times(group, temp):
+                temp.append(group)
+                # temp_hashes.append(group['hash'])
                 # Save our place so we can resume where we left off (with the next section)
                 group_idxs.append(group_idx + 1)
                 break
@@ -96,23 +61,16 @@ def create(courses):
         if len(temp) == len(courses):
             results.append(list(temp))
             temp.pop()
+            # temp_hashes.pop()
         # Otherwise, if we have tried all of the sections for this course, go back to the previous course and try any remaining sections
         elif group_idx >= len(current_course):
             course_idxs.pop()
             if len(course_idxs) > 0:
                 temp.pop()
+                # temp_hashes.pop()
             course_idx -= 1
         # Otherwise,
         else: 
             course_idx += 1
 
     return results
-
-start = time.time()
-results = create(courses)
-end = time.time()
-duration = round(end - start, 2)
-results = [[pair[1] for pair in result] for result in results]
-results.insert(0, {'algorithm': 'hash/group', 'duration': str(duration) + ' seconds', 'count': len(results)})
-with open(f'testing/hash_grouping/results-{term}.json','w') as file:
-    json.dump(results, file)
