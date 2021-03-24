@@ -3,3 +3,5 @@ __pycache__
 aws_keys.json
 *.json
 **/__pycache__
+*.csv
+.~lock*
