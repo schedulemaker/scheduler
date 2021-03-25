@@ -3,12 +3,12 @@ empty_hash = '000000000000000000000000000'
 
 counters = [[0,0],[0,0],[0,0]]
 
-def check_times(to_check, schedule_classtimes):
+def check_times(to_check, schedule):
     # First see if any hashes are already in the schedule, which would indicate a conflict, to save time
     # if schedule_hashes & to_check_hashes:
     #     return False
     # Otherwise go group by group
-    # schedule_classtimes = [classtime for group in schedule if group['classtimes'] for classtime in group['classtimes']]
+    schedule_classtimes = [classtime for group in schedule if group['classtimes'] for classtime in group['classtimes']]
     for classtime_a in to_check['classtimes']:
         for classtime_b in schedule_classtimes:
             # Check if times overlap
@@ -31,8 +31,7 @@ def check_times(to_check, schedule_classtimes):
 
 def create_schedules(courses):
     courses.sort(key=len)
-    group_idxs, results = [1],[]
-    temp = [{'groups': [courses[0][0]], 'classtimes': courses[0][0]['classtimes']}]
+    group_idxs, temp, results = [1],[courses[0][0]],[]
     course_idx = 0
 
     # While there are still courses left to try
@@ -49,15 +48,10 @@ def create_schedules(courses):
         # Go through each section of the course and check if it works
         while group_idx < len(current_course): 
             group = current_course[group_idx]
-            # If temp is empty add the section by default
-            if len(temp) == 0:
-                temp.append({'groups': [group], 'classtimes': group['classtimes']})
+            # Add the section if it does not conflict OR if it has no meeting times (online class)
+            if len(temp) == 0 or len(group['classtimes']) == 0 or check_times(group, temp):
+                temp.append(group)
                 # Save our place so we can resume where we left off (with the next section)
-                group_idxs.append(group_idx + 1)
-                break
-            # Otherwise add the section if it does not conflict OR if it has no meeting times (online class)
-            elif len(group['classtimes']) == 0 or check_times(group, temp[-1]['classtimes']):
-                temp.append({'groups': temp[-1]['groups'] + [group], 'classtimes': temp[-1]['classtimes'] + group['classtimes']})
                 group_idxs.append(group_idx + 1)
                 break
             # Otherwise, try the next section
