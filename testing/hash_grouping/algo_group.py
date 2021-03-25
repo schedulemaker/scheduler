@@ -1,3 +1,5 @@
+import itertools,functools
+
 hash_length = 27
 empty_hash = '000000000000000000000000000'
 
@@ -15,11 +17,9 @@ def check_times(to_check, schedule):
 
 def create_schedules(courses):
     courses.sort(key=len)
-    group_idxs, temp, results = [1],[courses[0][0]],[]
+    group_idxs, temp, temp_classtimes, results = [1],[courses[0][0]],[courses[0][0]['classtimes']],[]
     course_idx = 0
     group_idx = -1
-
-    # For some reason, inlining `current_course` and `group` below results in an absurd speedup (0.03s vs 12s with PyPy) and even hits 0.03s with CPython
 
     # While there are still courses left to try
     while course_idx >= 0:
@@ -31,13 +31,17 @@ def create_schedules(courses):
             course_idx += 1
             group_idx = 0
         
-        # current_course = courses[course_idx]
+        current_course = courses[course_idx]
         # Go through each section of the course and check if it works
-        while group_idx < len(courses[course_idx]): 
-            # group = current_course[group_idx]
+        while group_idx < len(current_course): 
+            group = current_course[group_idx]
             # Add the section if temp is empty, it does not conflict OR if it has no meeting times (online class)
-            if len(temp) == 0 or len(courses[course_idx][group_idx]['classtimes']) == 0 or check_times(courses[course_idx][group_idx]['classtimes'], [classtime for courses[course_idx][group_idx] in temp for classtime in courses[course_idx][group_idx]['classtimes']]):
-                temp.append(courses[course_idx][group_idx])
+            if len(temp) == 0 or len(group['classtimes']) == 0 or check_times(group['classtimes'], temp_classtimes[-1]):
+                temp.append(group)
+                if len(temp_classtimes) == 0:
+                    temp_classtimes.append(group['classtimes'])
+                else:
+                    temp_classtimes.append(temp_classtimes[-1] + group['classtimes'])
                 # Save our place so we can resume where we left off (with the next section)
                 group_idxs.append(group_idx + 1)
                 break
@@ -49,10 +53,12 @@ def create_schedules(courses):
         if len(temp) == len(courses):
             results.append(list(temp))
             temp.pop()
+            temp_classtimes.pop()
         # Otherwise, if we have tried all of the sections for this course, go back to the previous course and try any remaining sections
-        elif group_idx >= len(courses[course_idx]):
+        elif group_idx >= len(current_course):
             if course_idx > 0:
                 temp.pop()
+                temp_classtimes.pop()
             course_idx -= 1
         else:
             pass
