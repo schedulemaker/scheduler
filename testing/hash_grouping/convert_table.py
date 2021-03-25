@@ -52,7 +52,7 @@ def format(item):
         entry['hash'] = ''.join(course_hashes)
         entry['hashes'] = course_hashes
     else:
-        entry['classtimes'] = None
+        entry['classtimes'] = []
         entry['hash'] = empty_hash
         entry['hashes'] = []
     return entry

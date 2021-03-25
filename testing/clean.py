@@ -29,8 +29,8 @@ for item in data:
         faculty['displayName'] = html.unescape(faculty['displayName'].replace('&nbsp;',''))
     # Remove any empty meeting times
     item['meetingsFaculty'] = [mf for mf in item['meetingsFaculty'] if all([mf['meetingTime']['beginTime'], mf['meetingTime']['endTime']])]   
-    if len(item['meetingsFaculty']) == 0:
-        item['meetingsFaculty'] = None
+    # if len(item['meetingsFaculty']) == 0:
+    #     item['meetingsFaculty'] = None
     # Remove any duplicate meeting times
     if item['meetingsFaculty']:
         unique = {}
