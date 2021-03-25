@@ -1,5 +1,3 @@
-import itertools,functools
-
 hash_length = 27
 empty_hash = '000000000000000000000000000'
 
@@ -41,7 +39,7 @@ def create_schedules(courses):
                 if len(temp_classtimes) == 0:
                     temp_classtimes.append(group['classtimes'])
                 else:
-                    temp_classtimes.append(temp_classtimes[-1] + group['classtimes'])
+                    temp_classtimes.append([*temp_classtimes[-1], *group['classtimes']])
                 # Save our place so we can resume where we left off (with the next section)
                 group_idxs.append(group_idx + 1)
                 break
