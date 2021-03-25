@@ -1,6 +1,10 @@
-import json, sys
+import json, argparse
 
 # Converts the Banner data to the format used by the scheduler
+parser = argparse.ArgumentParser()
+parser.add_argument('--input',dest='input',help='Input file to convert')
+parser.add_argument('--output',dest='output',help='Output file')
+args = parser.parse_args()
 
 days = [
     'saturday',
@@ -13,8 +17,7 @@ days = [
 ]
 empty_hash = '000000000000000000000000000'
 
-term = sys.argv[1]
-with open(f'testing/temple-{term}-clean.json','r') as file:
+with open(args.input,'r') as file:
     data = json.load(file)
 
 def format(item):
@@ -56,5 +59,5 @@ def format(item):
 
 data = [format(item) for item in data]
 
-with open(f'testing/hash_grouping/table-{term}.json','w') as file:
+with open(args.output,'w') as file:
     json.dump(data,file)
