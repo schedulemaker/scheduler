@@ -1,4 +1,4 @@
-import json, time
+import json, sys
 
 # Converts the Banner data to the format used by the scheduler
 
@@ -13,7 +13,7 @@ days = [
 ]
 empty_hash = '000000000000000000000000000'
 
-term = '202036'
+term = sys.argv[1]
 with open(f'testing/temple-{term}-clean.json','r') as file:
     data = json.load(file)
 

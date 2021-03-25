@@ -5,3 +5,4 @@ aws_keys.json
 **/__pycache__
 *.csv
 .~lock*
+data/

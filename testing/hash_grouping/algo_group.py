@@ -1,16 +1,12 @@
-
-
 hash_length = 27
 empty_hash = '000000000000000000000000000'
 
 def check_times(to_check, to_check_hashes, schedule, schedule_hashes):
-    schedule = [s for s in schedule if s['classtimes']]
     # First see if any hashes are already in the schedule, which would indicate a conflict, to save time
-    # to_check_hashes = set(to_check['hashes'])
     if schedule_hashes & to_check_hashes:
         return False
     # Otherwise go group by group
-    for group in schedule:
+    for group in [s for s in schedule if s['classtimes']]:
         for classtime_a in to_check['classtimes']:
             for classtime_b in group['classtimes']:
                 # Check if date ranges overlap

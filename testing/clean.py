@@ -1,4 +1,4 @@
-import json, html
+import json, html, argparse
 
 # Cleans the data from Banner, including:
 #   - Consistent values for courses with no meeting times
@@ -15,8 +15,11 @@ days = [
     'friday'
 ]
 
-filename = 'temple-202103'
-with open(f'testing/{filename}.json', 'r') as file:
+parser = argparse.ArgumentParser()
+parser.add_argument('--file',dest='file',help='File to clean')
+args = parser.parse_args()
+
+with open(args.file, 'r') as file:
     data = json.load(file)
 
 for item in data:
@@ -40,5 +43,5 @@ for item in data:
             unique[mt_hash] = mf
         item['meetingsFaculty'] = list(unique.values())
 
-with open(f'testing/{filename}-clean.json','w') as file:
+with open(f'{args.file[:-5]}-clean.json','w') as file:
     json.dump(data,file)

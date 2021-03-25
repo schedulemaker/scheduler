@@ -1,7 +1,13 @@
-import json,csv,sys
+import json,csv,argparse
+
+# Gets course stats from the raw JSON file from Banner
+
+parser = argparse.ArgumentParser()
+parser.add_argument('--file',dest='file',help='File to get stats for')
+args = parser.parse_args()
 
 empty_hash = '000000000000000000000000000'
-with open(sys.argv[1],'r') as file:
+with open(args.file,'r') as file:
     data = json.load(file)
 
 days = [
@@ -43,5 +49,7 @@ for course in data:
     d[course['name']][course['hash']].append(course['courseReferenceNumber'])
     d_times[course['hash']].append(course['courseReferenceNumber'])
 
-with open(f'{sys.argv[1][:-4]}-stats.csv', 'w') as file:
-    file.writelines([f'{key}, {len(d[key])}\n' for key in d])
+with open(f'{args.file[:-5]}-stats.csv', 'w') as file:
+    file.writelines(['Course,Sections,Groups,Grouped size(%)\n'])
+    lines = [[key, sum([len(d[key][subkey]) for subkey in d[key]]), len(d[key])] for key in d]
+    file.writelines([f'{i[0]},{i[1]},{i[2]},{round(i[2]/i[1],2)}\n' for i in lines])
