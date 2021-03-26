@@ -1,4 +1,4 @@
-import json, html, argparse
+import json, html, argparse, unicodedata
 
 # Cleans the data from Banner, including:
 #   - Consistent values for courses with no meeting times
@@ -15,6 +15,9 @@ days = [
     'friday'
 ]
 
+def clean_str(s):
+    return html.unescape(s.replace('&nbsp;',''))
+
 parser = argparse.ArgumentParser()
 parser.add_argument('--file',dest='file',help='File to clean')
 args = parser.parse_args()
@@ -24,9 +27,9 @@ with open(args.file, 'r') as file:
 
 for item in data:
     # Clean course titles and instructor names
-    item['courseTitle'] = html.unescape(item['courseTitle'].replace('&nbsp;',''))
+    item['courseTitle'] = clean_str(item['courseTitle'])
     for faculty in item['faculty']:
-        faculty['displayName'] = html.unescape(faculty['displayName'].replace('&nbsp;',''))
+        faculty['displayName'] = clean_str(faculty['displayName'])
     # Remove any empty meeting times
     item['meetingsFaculty'] = [mf for mf in item['meetingsFaculty'] if all([mf['meetingTime']['beginTime'], mf['meetingTime']['endTime']])]   
     # if len(item['meetingsFaculty']) == 0:

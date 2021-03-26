@@ -1,0 +1,41 @@
+name:
+title:
+groups: [
+    hash,
+    classtimes: [
+      {
+        start-time
+        end-time
+        start-date
+        end-date
+        days
+      }
+    ],
+    crns: [
+      {
+        crn
+        campus
+        section,
+        instructors: [
+          {
+            id
+            name
+          }
+        ],
+        locations: [
+          {
+            building
+            room
+          }
+        ],
+        enrollment: 
+          capacity
+          count
+          available,
+        waitlist:
+          capacity
+          count
+          available
+      }
+    ]
+]
