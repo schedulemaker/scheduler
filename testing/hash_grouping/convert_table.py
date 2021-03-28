@@ -75,7 +75,7 @@ def format_table(data):
             classtimes.append(b)
         hashes.sort()
         # Add the group to the table entry if not already in
-        group_hash = ''.join(hashes)
+        group_hash = 0 if len(hashes) == 0 else int(''.join(hashes))
         if group_hash not in table[name]['groups']:
             table[name]['groups'][group_hash] = {
                 'hash': group_hash,
@@ -144,4 +144,4 @@ data = [table[key] for key in table]
 
 
 with open(args.output,'w') as file:
-    json.dump(data,file)
+    json.dump(data,file,indent=2)

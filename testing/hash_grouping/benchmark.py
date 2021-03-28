@@ -7,7 +7,7 @@ parser.add_argument('--term', dest='term', help='Term code')
 parser.add_argument('--log',dest='log',help='Log results to file',default=False,action='store_true')
 args = parser.parse_args()
 
-with open(f'testing/hash_grouping/table-{args.term}.json','r') as file:
+with open(f'table-{args.term}.json','r') as file:
     data = json.load(file)
 
 courses = [course for course in data if course['name'] in args.course_list]
@@ -22,6 +22,6 @@ print(f'count: {len(results)}')
 
 if args.log:
     results = [[group['crns'] for group in result] for result in results]
-    results.insert(0, {'algorithm': 'hash/group', 'duration': duration + ' seconds', 'count': len(results)})
-    with open(f'testing/hash_grouping/results-{args.term}.json','w') as file:
-        json.dump(results, file)
+    results.insert(0, {'algorithm': 'hash/group', 'duration': str(duration) + ' seconds', 'count': len(results)})
+    with open(f'results-{args.term}.json','w') as file:
+        json.dump(results, file, indent=2)
