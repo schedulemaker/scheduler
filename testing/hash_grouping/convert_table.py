@@ -75,7 +75,7 @@ def format_table(data):
             classtimes.append(b)
         hashes.sort()
         # Add the group to the table entry if not already in
-        group_hash = 0 if len(hashes) == 0 else int(''.join(hashes))
+        group_hash = '0' if len(hashes) == 0 else ''.join(hashes)
         if group_hash not in table[name]['groups']:
             table[name]['groups'][group_hash] = {
                 'hash': group_hash,
