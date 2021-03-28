@@ -1,4 +1,4 @@
-import json, time, argparse
+import json, time, argparse, os
 from algo_group import create_schedules
 
 parser = argparse.ArgumentParser()
@@ -6,6 +6,10 @@ parser.add_argument('--courses', dest='course_list', help='List of courses to cr
 parser.add_argument('--term', dest='term', help='Term code')
 parser.add_argument('--log',dest='log',help='Log results to file',default=False,action='store_true')
 args = parser.parse_args()
+
+p = os.path.dirname(__file__)
+if p != '' and os.getcwd() != p:
+    os.chdir(p)
 
 with open(f'table-{args.term}.json','r') as file:
     data = json.load(file)
@@ -21,7 +25,7 @@ print(f'duration: {duration} seconds')
 print(f'count: {len(results)}')
 
 if args.log:
-    results = [[group['crns'] for group in result] for result in results]
+    results = [''.join([f'{group["hash"]}' for group in result]) for result in results]
     results.insert(0, {'algorithm': 'hash/group', 'duration': str(duration) + ' seconds', 'count': len(results)})
-    with open(f'results-{args.term}.json','w') as file:
+    with open(f'results-{args.term}.py.json','w') as file:
         json.dump(results, file, indent=2)
