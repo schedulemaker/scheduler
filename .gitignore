@@ -6,3 +6,4 @@ aws_keys.json
 *.csv
 .~lock*
 data/
+*.dat
