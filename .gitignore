@@ -7,3 +7,4 @@ aws_keys.json
 .~lock*
 data/
 *.dat
+**/node_modules/
