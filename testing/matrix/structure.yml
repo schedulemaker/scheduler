@@ -1,0 +1,35 @@
+name:
+title:
+groups: [
+  {
+    hash
+    matrix,
+    crns: [
+      {
+        crn
+        campus
+        section,
+        instructors: [
+          {
+            id
+            name
+          }
+        ],
+        locations: [
+          {
+            building
+            room
+          }
+        ],
+        enrollment: 
+          capacity
+          count
+          available,
+        waitlist:
+          capacity
+          count
+          available
+      }
+    ]
+  }
+]
