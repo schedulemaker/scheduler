@@ -27,7 +27,7 @@ func main() {
 	names := flag.String("courses", "", "List of courses to create schedules from")
 	flag.Parse()
 	course_names := strings.Split(*names, ",")
-	path := fmt.Sprintf("./table-%v.json", *term)
+	path := fmt.Sprintf("table-%v.json", *term)
 
 	content, err := ioutil.ReadFile(path)
 	if err != nil {

@@ -11,7 +11,7 @@ p = os.path.dirname(__file__)
 if p != '' and os.getcwd() != p:
     os.chdir(p)
 
-with open(f'table-{args.term}.json','r') as file:
+with open(f'../table-{args.term}.json','r') as file:
     data = json.load(file)
 
 courses = [course for course in data if course['name'] in args.course_list]

@@ -10,7 +10,7 @@ program
 program.parse();
 const options = program.opts();
 
-const data = require(`./table-${options.term}.json`);
+const data = require(`../table-${options.term}.json`);
 const courses = data.filter(c => options.courses.includes(c.name));
 
 const start = process.hrtime();
