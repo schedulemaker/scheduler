@@ -84,9 +84,9 @@ def format_table(data):
             }
         # Add the section to the group
         table[name]['groups'][group_hash]['crns'].append({
-            'crn': item['courseReferenceNumber'],
+            'crn': int(item['courseReferenceNumber']),
             'section': item['sequenceNumber'],
-            'instructors': [{'id': person['bannerId'], 'name': person['displayName']} for person in item['faculty']],
+            'instructors': [{'id': int(person['bannerId']), 'name': person['displayName']} for person in item['faculty']],
             'enrollment': {
                 'capacity': item['maximumEnrollment'],
                 'count': item['enrollment'],
