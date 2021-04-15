@@ -1,8 +1,12 @@
 import numpy as np
+import functools, operator
 
-def check_times(to_check, arrays):
-    result = sum([*arrays,to_check])
-    return result.max() == 1
+def check_times(arrays, to_check):
+    arrays = [item for item in arrays if len(item) != 0]
+    if len(arrays) == 0:
+        return True
+    else:
+        return not np.bitwise_and.reduce([*arrays,to_check]).any()
 
 def create_schedules(courses):
     courses.sort(key=lambda x: len(x['groups']))
@@ -26,7 +30,7 @@ def create_schedules(courses):
         while group_idx < len(current_course): 
             group = current_course[group_idx]
             # Add the group if temp is empty, it does not conflict OR if it has no meeting times (online class)
-            if len(temp) == 0 or check_times(group['matrix'], temp):
+            if len(temp) == 0 or len(group['matrix']) == 0 or check_times(temp,group['matrix']):
                 temp.append(group['matrix'])
                 # Save our place so we can resume where we left off (with the next group)
                 group_idxs.append(group_idx + 1)

@@ -86,7 +86,7 @@ def format_table(data):
             }
         
         hashes,arrays = [],[]
-        for mf in item['meetingsFaculty']:
+        for mf in [ mf for mf in item['meetingsFaculty'] if len([idx for idx,day in enumerate(days) if mf['meetingTime'][day]]) > 0]:
             a,b = get_hash_matrix(mf)
             hashes.append(a)
             arrays.append(b)
@@ -96,7 +96,7 @@ def format_table(data):
         if group_hash not in table[name]['groups']:
             table[name]['groups'][group_hash] = {
                 'hash': group_hash,
-                'matrix': [] if len(arrays) == 0 else np.packbits(sum(arrays)).view(np.uint32).tolist(),
+                'matrix': [] if len(arrays) == 0 else np.ravel(np.packbits(sum(arrays))).view(np.uint32).tolist(),
                 'crns': []
             }
         # Add the section to the group
